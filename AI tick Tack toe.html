@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Tic Tac Toe</title>
+    <style>
+      table, td {
+        border: 1px solid black ;
+        width: 300px;
+        height: 100px;
+        text-align: center;
+        font-size: 50px;
+        position: center;
+      }
+
+    
+    </style>
+  </head>
+  <body>
+    <h1 style="font-size:60px;"><a href="yaboi870.github.io/Ultraclip" >Tick Tack Toe exit</a> </h1>
+
+    <table>
+      <tr>
+        <td id="0"></td>
+        <td id="1"></td>
+        <td id="2"></td>
+      </tr>
+      <tr>
+        <td id="3"></td>
+        <td id="4"></td>
+        <td id="5"></td>
+      </tr>
+      <tr>
+        <td id="6"></td>
+        <td id="7"></td>
+        <td id="8"></td>
+      </tr>
+    </table>
+    <script>
+      let currentPlayer = 'X';
+      const cells = document.querySelectorAll('td');
+      const resetBtn = document.createElement('button');
+      resetBtn.textContent = 'Reset';
+      document.body.appendChild(resetBtn);
+
+      function resetGame() {
+        cells.forEach((cell) => {
+          cell.textContent = '';
+          cell.addEventListener('click', handleClick, { once: true });
+          cell.style.backgroundColor = 'white';
+        });
+      }
+
+      function handleClick(event) {
+        event.target.textContent = currentPlayer;
+        event.target.style.backgroundColor = 'lightgray';
+        if (checkWin()) {
+          cells.forEach((cell) => {
+            cell.removeEventListener('click', handleClick);
+          });
+          alert(currentPlayer + ' wins!');
+        } else if (checkDraw()) {
+          cells.forEach((cell) => {
+            cell.removeEventListener('click', handleClick);
+          });
+          alert('Draw!');
+        } else {
+          currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        }
+      }
+
+      function checkWin() {
+        const winningCombinations = [
+          [0, 1, 2],
+          [3, 4, 5],
+          [6, 7, 8],
+          [0, 3, 6],
+          [1, 4, 7],
+          [2, 5, 8],
+          [0, 4, 8],
+          [2, 4, 6]
+        ];
+
+        return winningCombinations.some((combination) => {
+          return combination.every((index) => {
+            return cells[index].textContent === currentPlayer;
+          });
+        });
+      }
+
+      function checkDraw() {
+        return Array.from(cells).every((cell) => {
+          return cell.textContent !== '';
+        });
+      }
+
+      cells.forEach((cell) => {
+        cell.addEventListener('click', handleClick, { once: true });
+      });
+      resetBtn.addEventListener('click', resetGame);
+    </script>
+  </body>
+</html>
